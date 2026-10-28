@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MUSAFA MOBILE</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #212529;
+      --text-muted-color: #6c757d;
+      --border-color: #dee2e6;
+      --primary-color: #0d6efd;
+      --table-header-bg: #f1f5f9;
+      --table-header-color: #1e293b;
+    }
+
+    body.dark-mode {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-color: #f8fafc;
+      --text-muted-color: #94a3b8;
+      --border-color: #334155;
+      --primary-color: #38bdf8;
+      --table-header-bg: #334155;
+      --table-header-color: #f8fafc;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .font-sm { font-size: 0.875rem; }
+    .font-md { font-size: 1rem; }
+    .font-lg { font-size: 1.125rem; }
+
+    .card {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+      color: var(--text-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    .navbar {
+      background-color: var(--card-bg) !important;
+      border-color: var(--border-color) !important;
+    }
+    .navbar-brand, .nav-link {
+      color: var(--text-color) !important;
+    }
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
+    .text-muted {
+      color: var(--text-muted-color) !important;
+    }
+
+    .table {
+      color: var(--text-color) !important;
+      border-color: var(--border-color) !important;
+    }
+    .table thead th {
+      background-color: var(--table-header-bg) !important;
+      color: var(--table-header-color) !important;
+      border-color: var(--border-color) !important;
+    }
+    .table td, .table th {
+      background-color: transparent !important;
+      color: var(--text-color) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    .navbar-brand img {
+      height: 42px;
+      width: 42px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    .countdown-box {
+      background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+      color: white;
+      border-radius: 12px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body class="font-md">
+
+  <!-- HALAMAN LOGIN UTAMA -->
+  <div id="loginPage" class="login-wrapper">
+    <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+      <div class="text-center mb-4">
+        <img src="https://lh3.googleusercontent.com/d/1v9XLw_NjWKP9zdtIgREkPYmgakhKMq_n" alt="Logo" class="mb-3" style="width: 80px; height: 80px; border-radius: 50%;">
+        <h4 class="fw-bold">MUSAFA MOBILE</h4>
+        <p class="text-muted small">Sistem Manajemen Agenda dan Penugasan</p>
+      </div>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label">Kode Akses Login</label>
+          <div class="input-group">
+            <input type="password" id="loginPass" class="form-control" placeholder="Masukkan Kode Login" autocomplete="current-password" required>
+            <button class="btn btn-outline-secondary" type="button" id="toggleLoginPass" onclick="togglePasswordVisibility('loginPass', 'eyeIconLogin')">
+              <i class="fa-regular fa-eye" id="eyeIconLogin"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 fw-bold">MASUK SISTEM</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APLIKASI UTAMA -->
+  <div id="mainApp" class="d-none">
+    <nav class="navbar navbar-expand-lg border-bottom sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#" onclick="showTab('dashboard')">
+          <img src="https://lh3.googleusercontent.com/d/1v9XLw_NjWKP9zdtIgREkPYmgakhKMq_n" alt="Logo">
+          <div>
+            <div class="fw-bold lh-1">MUSAFA MOBILE</div>
+            <small class="text-muted" style="font-size: 0.7rem;">Sistem Manajemen Agenda dan Penugasan</small>
+          </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto gap-2 mt-2 mt-lg-0">
+            <li class="nav-item"><a class="nav-link active fw-semibold" href="#" onclick="showTab('dashboard')"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="checkPinAndShowTab('agenda')"><i class="fa-solid fa-calendar-plus me-1"></i> Input Agenda</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="checkPinAndShowTab('tugas')"><i class="fa-solid fa-list-check me-1"></i> Input Tugas</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="checkPinAndShowTab('jadwal')"><i class="fa-solid fa-book-open me-1"></i> Input Jadwal</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="checkPinAndShowTab('ujian')"><i class="fa-solid fa-file-pen me-1"></i> Input Ujian</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="showTab('about')"><i class="fa-solid fa-user me-1"></i> Tentang</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" onclick="showTab('setting')"><i class="fa-solid fa-gear me-1"></i> Setting</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-4">
+      
+      <!-- DASHBOARD -->
+      <div id="tab-dashboard" class="tab-content">
+        <div class="card p-3 mb-4 bg-primary text-white border-0">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <h3 class="fw-bold mb-0">SELAMAT DATANG DI MUSAFA MOBILE</h3>
+              <div id="liveClock" class="fw-semibold mt-1">MEMUAT WAKTU...</div>
+            </div>
+            <button class="btn btn-light text-primary fw-bold" onclick="requestNotificationPermission()"><i class="fa-regular fa-bell me-1"></i> Aktifkan Notifikasi Chrome</button>
+          </div>
+        </div>
+
+        <!-- WIDGET STATISTIK & PERSENTASE -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="card p-3 shadow-sm border-start border-primary border-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted mb-1"><i class="fa-solid fa-calendar-check me-1"></i> Progress Agenda Masuk</h6>
+                  <h4 id="statAgenda" class="fw-bold mb-0">0 / 0 Selesai</h4>
+                </div>
+                <div class="text-end">
+                  <h3 id="persenAgenda" class="fw-bold text-primary mb-0">0%</h3>
+                  <small class="text-muted">Terlaksana</small>
+                </div>
+              </div>
+              <div class="progress mt-2" style="height: 8px;">
+                <div id="progressBarAgenda" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card p-3 shadow-sm border-start border-success border-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted mb-1"><i class="fa-solid fa-tasks me-1"></i> Progress Tugas Masuk</h6>
+                  <h4 id="statTugas" class="fw-bold mb-0">0 / 0 Selesai</h4>
+                </div>
+                <div class="text-end">
+                  <h3 id="persenTugas" class="fw-bold text-success mb-0">0%</h3>
+                  <small class="text-muted">Selesai</small>
+                </div>
+              </div>
+              <div class="progress mt-2" style="height: 8px;">
+                <div id="progressBarTugas" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="countdown-box mb-4 shadow">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <span class="badge bg-warning text-dark mb-2">Agenda Terdekat</span>
+              <h4 id="cdTitle" class="fw-bold">Tidak Ada Agenda Mendatang</h4>
+              <p id="cdSub" class="mb-0 opacity-75">-</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <h2 id="cdTimer" class="fw-bold mb-0">00:00:00</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- JADWAL PELAJARAN / UJIAN -->
+          <div class="col-lg-4">
+            <div class="card p-3 mb-3 border-start border-4 border-info" id="boxJadwalHariIni">
+              <h5 class="fw-bold mb-2 text-info" id="titleHariIni"><i class="fa-solid fa-calendar-day me-2"></i> Jadwal Pelajaran Hari Ini</h5>
+              <div id="jadwalHariIni"></div>
+            </div>
+
+            <div class="card p-3 mb-4 border-start border-4 border-secondary" id="boxJadwalBesok">
+              <h5 class="fw-bold mb-2 text-secondary" id="titleBesok"><i class="fa-solid fa-calendar-week me-2"></i> Jadwal Pelajaran Besok</h5>
+              <div id="jadwalBesok"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <div class="card p-3 mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="fa-solid fa-calendar-check me-2"></i> Agenda Mendatang</h5>
+                <button class="btn btn-sm btn-outline-primary" onclick="loadData()"><i class="fa-solid fa-rotate"></i> Refresh Data</button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Agenda</th>
+                      <th>Jatuh Tempo</th>
+                      <th>Prioritas</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbAgendaDashboard"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card p-3">
+              <h5 class="fw-bold mb-3"><i class="fa-solid fa-tasks me-2"></i> Daftar Tugas</h5>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Mapel & Guru</th>
+                      <th>Deadline</th>
+                      <th>Detail</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbTugasDashboard"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB TENTANG (BIODATA) -->
+      <div id="tab-about" class="tab-content d-none">
+        <div class="card p-4 mx-auto shadow-sm" style="max-width:700px;">
+          <div class="text-center mb-4">
+            <img src="https://lh3.googleusercontent.com/d/1v9XLw_NjWKP9zdtIgREkPYmgakhKMq_n" alt="Logo" class="mb-3 rounded-circle" style="width: 100px; height: 100px; object-fit: contain;">
+            <h3 class="fw-bold text-primary mb-1">BIODATA PENGEMBANG</h3>
+            <p class="text-muted small">MUSAFA MOBILE SYSTEM</p>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-borderless fs-6 align-middle">
+              <tbody>
+                <tr class="border-bottom">
+                  <th style="width: 35%;" class="text-muted"><i class="fa-solid fa-user me-2 text-primary"></i>Nama Lengkap</th>
+                  <td class="fw-bold text-dark">Muhammad Sufyan Fahriza</td>
+                </tr>
+                <tr class="border-bottom">
+                  <th class="text-muted"><i class="fa-solid fa-cake-candles me-2 text-primary"></i>TTL</th>
+                  <td class="fw-bold text-dark">Pati, 21 Januari 2008</td>
+                </tr>
+                <tr class="border-bottom">
+                  <th class="text-muted"><i class="fa-solid fa-award me-2 text-primary"></i>Eselon / Jabatan</th>
+                  <td class="fw-bold text-dark">Eselon IIIa Rohis<br><small class="text-muted fw-normal">(Pejabat Pimpinan Pusat Rohis)</small></td>
+                </tr>
+                <tr>
+                  <th class="text-muted"><i class="fa-solid fa-user-group me-2 text-primary"></i>Nama Sahabat</th>
+                  <td class="fw-bold text-dark">Tommy Pramono</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center mt-3">
+            <button class="btn btn-secondary btn-sm" onclick="showTab('dashboard')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Dashboard</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT AGENDA -->
+      <div id="tab-agenda" class="tab-content d-none">
+        <div class="card p-4 mx-auto" style="max-width:700px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Form Input Agenda</h4>
+            <button class="btn btn-sm btn-secondary" onclick="showTab('dashboard')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Dashboard</button>
+          </div>
+          <form onsubmit="submitAgenda(event)">
+            <input type="hidden" id="agRowId">
+            <div class="mb-3">
+              <label class="form-label">Judul Agenda</label>
+              <input type="text" id="agJudul" class="form-control" required>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Lokasi</label>
+                <input type="text" id="agLokasi" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Waktu Mulai / Tanggal (Format 24 Jam)</label>
+                <input type="datetime-local" id="agJatuhTempo" class="form-control" onchange="calcFullDay()" required>
+              </div>
+            </div>
+
+            <div class="card p-3 mb-3 bg-light border">
+              <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" id="isFullDay" onchange="toggleFullDayOptions()">
+                <label class="form-check-label fw-bold" for="isFullDay"><i class="fa-solid fa-clock me-1"></i> Agenda Full Day / Berdurasi</label>
+              </div>
+              <div id="fullDayOptions" class="d-none mt-2">
+                <label class="form-label text-muted small mb-1">Pilih Durasi Agenda:</label>
+                <select id="agDurasi" class="form-select" onchange="calcFullDay()">
+                  <option value="1">1 Hari</option>
+                  <option value="2">2 Hari</option>
+                  <option value="3">3 Hari</option>
+                  <option value="4">4 Hari</option>
+                  <option value="5">5 Hari</option>
+                  <option value="6">6 Hari</option>
+                  <option value="7">1 Pekan (7 Hari)</option>
+                </select>
+                <small class="text-primary d-block mt-2" id="fullDayPreview"></small>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Prioritas</label>
+                <select id="agPrioritas" class="form-select">
+                  <option value="DINAS">DINAS</option>
+                  <option value="KHUSUS">KHUSUS</option>
+                  <option value="UMUM">UMUM</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Status</label>
+                <select id="agStatus" class="form-select" onchange="toggleDisposisi(this.value)">
+                  <option value="Agendakan">Agendakan</option>
+                  <option value="Disposisi">Disposisi</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 d-none" id="disposisiGroup">
+              <label class="form-label">Pilih Target Disposisi</label>
+              <select id="agDisposisiTarget" class="form-select mb-2" onchange="toggleDisposisiLain(this.value)">
+                <option value="WAKIL KETUA">WAKIL KETUA</option>
+                <option value="SEKRETARIS">SEKRETARIS</option>
+                <option value="OPSI LAIN">OPSI LAIN</option>
+              </select>
+              <div id="disposisiLainGroup" class="d-none">
+                <label class="form-label text-muted small">Disposisi Kepada...</label>
+                <input type="text" id="agDisposisiText" class="form-control" placeholder="Masukkan nama/jabatan disposisi">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Tamu (Opsional)</label>
+              <input type="text" id="agTamu" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary fw-bold w-100">SIMPAN AGENDA</button>
+          </form>
+
+          <hr class="my-4">
+          <h5 class="fw-bold">Kelola Agenda</h5>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead><tr><th>Judul</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody id="tbAdminAgenda"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT TUGAS -->
+      <div id="tab-tugas" class="tab-content d-none">
+        <div class="card p-4 mx-auto" style="max-width:700px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Form Input Tugas</h4>
+            <button class="btn btn-sm btn-secondary" onclick="showTab('dashboard')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Dashboard</button>
+          </div>
+          <form onsubmit="submitTugas(event)">
+            <input type="hidden" id="tgRowId">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Mata Pelajaran</label>
+                <input type="text" id="tgMapel" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Nama Guru</label>
+                <input type="text" id="tgGuru" class="form-control" required>
+              </div>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Deadline (Format 24 Jam)</label>
+                <input type="datetime-local" id="tgDeadline" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Status Tugas</label>
+                <select id="tgStatus" class="form-select">
+                  <option value="Baru">Baru</option>
+                  <option value="On Proses">On Proses</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Detail Tugas (Link / Deskripsi)</label>
+              <textarea id="tgDetail" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary fw-bold w-100">SIMPAN TUGAS</button>
+          </form>
+
+          <hr class="my-4">
+          <h5 class="fw-bold">Kelola Tugas</h5>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead><tr><th>Mapel</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody id="tbAdminTugas"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT JADWAL -->
+      <div id="tab-jadwal" class="tab-content d-none">
+        <div class="card p-4 mx-auto" style="max-width:700px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Form Input Jadwal Pelajaran</h4>
+            <button class="btn btn-sm btn-secondary" onclick="showTab('dashboard')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Dashboard</button>
+          </div>
+          <form onsubmit="submitJadwal(event)">
+            <input type="hidden" id="jwRowId">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Hari</label>
+                <select id="jwHari" class="form-select">
+                  <option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option><option value="Minggu">Minggu</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Jam / Waktu (Format 24 Jam)</label>
+                <input type="text" id="jwJam" class="form-control" placeholder="07:00 - 15:30" required>
+              </div>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Mata Pelajaran</label>
+                <input type="text" id="jwMapel" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Nama Guru</label>
+                <input type="text" id="jwGuru" class="form-control" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary fw-bold w-100">SIMPAN JADWAL</button>
+          </form>
+
+          <hr class="my-4">
+          <h5 class="fw-bold">Kelola Jadwal</h5>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead><tr><th>Hari & Jam</th><th>Mapel</th><th>Aksi</th></tr></thead>
+              <tbody id="tbAdminJadwal"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT JADWAL UJIAN -->
+      <div id="tab-ujian" class="tab-content d-none">
+        <div class="card p-4 mx-auto" style="max-width:700px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Form Input Jadwal Ujian</h4>
+            <button class="btn btn-sm btn-secondary" onclick="showTab('dashboard')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Dashboard</button>
+          </div>
+
+          <div class="card p-3 mb-4 bg-warning bg-opacity-10 border-warning">
+            <div class="form-check form-switch fs-5">
+              <input class="form-check-input" type="checkbox" id="toggleModeUjian" onchange="toggleExamMode(this)">
+              <label class="form-check-label fw-bold text-dark" for="toggleModeUjian"><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Aktifkan Mode Jadwal Ujian (Gantikan Jadwal Pelajaran)</label>
+            </div>
+            <small class="text-muted d-mt-1">Jika diaktifkan, dashboard utama akan otomatis menampilkan jadwal ujian dan menyembunyikan jadwal pelajaran biasa.</small>
+          </div>
+
+          <form onsubmit="submitUjian(event)">
+            <input type="hidden" id="ujRowId">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Hari</label>
+                <select id="ujHari" class="form-select">
+                  <option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option><option value="Minggu">Minggu</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Jam / Waktu (Format 24 Jam)</label>
+                <input type="text" id="ujJam" class="form-control" placeholder="07:30 - 11:00" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Mata Pelajaran Ujian</label>
+              <input type="text" id="ujMapel" class="form-control" placeholder="Contoh: Matematika" required>
+            </div>
+            <button type="submit" class="btn btn-primary fw-bold w-100">SIMPAN JADWAL UJIAN</button>
+          </form>
+
+          <hr class="my-4">
+          <h5 class="fw-bold">Kelola Jadwal Ujian</h5>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead><tr><th>Hari & Jam</th><th>Mata Pelajaran Ujian</th><th>Aksi</th></tr></thead>
+              <tbody id="tbAdminUjian"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTING -->
+      <div id="tab-setting" class="tab-content d-none">
+        <div class="card p-4 mx-auto" style="max-width:700px;">
+          <h4 class="fw-bold mb-4"><i class="fa-solid fa-sliders me-2"></i> Pengaturan</h4>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Mode Tampilan</label>
+            <div class="d-flex gap-3">
+              <button class="btn btn-outline-primary" id="btnModeLight" onclick="setTheme('light')"><i class="fa-solid fa-sun me-1"></i> Terang</button>
+              <button class="btn btn-outline-primary" id="btnModeDark" onclick="setTheme('dark')"><i class="fa-solid fa-moon me-1"></i> Gelap</button>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Ukuran Font</label>
+            <select class="form-select" onchange="setFontSize(this.value)">
+              <option value="font-sm">Kecil</option>
+              <option value="font-md" selected>Sedang</option>
+              <option value="font-lg">Besar</option>
+            </select>
+          </div>
+          <hr class="my-4">
+          <button class="btn btn-danger fw-bold w-100" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i> KELUAR / LOGOUT</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL VERIFIKASI PIN -->
+  <div class="modal fade" id="pinModal" tabindex="-1" aria-labelledby="pinModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-4 border-0 shadow-lg">
+        <div class="text-center mb-3">
+          <i class="fa-solid fa-user-lock text-primary fa-3x mb-2"></i>
+          <h5 class="fw-bold" id="pinModalLabel">Verifikasi Keamanan</h5>
+          <p class="text-muted small mb-0">Masukkan PIN Otorisasi untuk membuka halaman ini</p>
+        </div>
+        <form id="pinForm">
+          <div class="mb-3">
+            <div class="input-group">
+              <input type="password" id="inputPinModal" class="form-control text-center fs-4" placeholder="••••" required autocomplete="off">
+              <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('inputPinModal', 'eyeIconModal')">
+                <i class="fa-regular fa-eye" id="eyeIconModal"></i>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-secondary w-50" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary w-50 fw-bold">Verifikasi</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // URL Web App GAS baru Anda
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxzNrwRfztNQQnC3qPcdPDoS4b4clFMpRfxsn4k24JdRpG70t_RDYwGD0WvXngCOgWdeQ/exec';
+
+    let appData = { agenda: [], tugas: [], jadwal: [], ujian: [] };
+    let pendingTab = null;
+    let pinModalObj = null;
+    let notifiedItems = new Set();
+    
+    // Sinkronisasi status mode ujian menggunakan localStorage agar sinkron di semua perangkat (HP / Laptop)
+    let isExamActive = localStorage.getItem('isExamActive') === 'true';
+
+    const priorityRank = {
+      'DINAS': 1,
+      'KHUSUS': 2,
+      'UMUM': 3
+    };
+
+    function togglePasswordVisibility(inputId, eyeIconId) {
+      const inputEl = document.getElementById(inputId);
+      const eyeIcon = document.getElementById(eyeIconId);
+      if (inputEl.type === 'password') {
+        inputEl.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        inputEl.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    function requestFullScreen() {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(err => console.log("Full screen prevented:", err));
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      
+      const dayStr = days[now.getDay()].toUpperCase();
+      const dateStr = now.getDate();
+      const monthStr = months[now.getMonth()].toUpperCase();
+      const yearStr = now.getFullYear();
+      
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      
+      const el = document.getElementById('liveClock');
+      if (el) {
+        el.innerText = `${dayStr}, ${dateStr} ${monthStr} ${yearStr} - ${hours}:${mins}:${secs} WIB`;
+      }
+      updateCountdown();
+      checkDeadlineNotifications();
+      renderDaySchedules();
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modalEl = document.getElementById('pinModal');
+      pinModalObj = new bootstrap.Modal(modalEl);
+
+      modalEl.addEventListener('shown.bs.modal', () => {
+        const inputPin = document.getElementById('inputPinModal');
+        inputPin.value = '';
+        inputPin.focus();
+      });
+
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+
+      // Sinkronkan posisi tombol switch dengan status tersimpan (localStorage) di HP / Laptop
+      applyExamModeUI(isExamActive);
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const pass = document.getElementById('loginPass').value;
+      
+      callGasApi('verifyLogin', { pass: pass })
+        .then(res => {
+          if (res) {
+            document.getElementById('loginPage').classList.add('d-none');
+            document.getElementById('mainApp').classList.remove('d-none');
+            requestFullScreen();
+            loadData();
+          } else {
+            alert('Kode Akses Login Salah!');
+          }
+        })
+        .catch(err => {
+          if (pass === 'fahriztommy') {
+            document.getElementById('loginPage').classList.add('d-none');
+            document.getElementById('mainApp').classList.remove('d-none');
+            requestFullScreen();
+            loadData();
+          } else {
+            alert('Kode Akses Login Salah!');
+          }
+        });
+    });
+
+    function checkPinAndShowTab(tabName) {
+      pendingTab = tabName;
+      if (pinModalObj) {
+        pinModalObj.show();
+      }
+    }
+
+    document.getElementById('pinForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const pinVal = document.getElementById('inputPinModal').value;
+      if (pinVal === 'FT') {
+        pinModalObj.hide();
+        if (pendingTab) {
+          showTab(pendingTab);
+          pendingTab = null;
+        }
+      } else {
+        alert('PIN Salah! Akses ditolak.');
+        document.getElementById('inputPinModal').value = '';
+      }
+    });
+
+    function callGasApi(action, payload = {}) {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        return new Promise((resolve, reject) => {
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)[action](...(Object.values(payload)));
+        });
+      }
+
+      const formData = new FormData();
+      formData.append('action', action);
+      formData.append('payload', JSON.stringify(payload));
+
+      return fetch(API_URL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.status === 'error') throw new Error(res.message);
+        return res.data;
+      });
+    }
+
+    function loadData() {
+      callGasApi('getAllDashboardData')
+        .then(data => {
+          appData = data || { agenda: [], tugas: [], jadwal: [], ujian: [] };
+          renderAll();
+        })
+        .catch(err => console.error("Load Data Error:", err));
+    }
+
+    function renderAll() {
+      checkAutoStatus();
+      updateStatistics();
+      renderDashboard();
+      renderAdminTables();
+    }
+
+    function checkAutoStatus() {
+      const now = new Date();
+      if (Array.isArray(appData.agenda)) {
+        appData.agenda.forEach(item => {
+          if (item.JatuhTempo && parseCustomDate(item.JatuhTempo) < now && item.Status !== 'Selesai') {
+            item.Status = 'Selesai';
+          }
+        });
+      }
+      if (Array.isArray(appData.tugas)) {
+        appData.tugas.forEach(item => {
+          if (item.Deadline && parseCustomDate(item.Deadline) < now && item.Status !== 'Selesai') {
+            item.Status = 'Selesai';
+          }
+        });
+      }
+    }
+
+    function parseCustomDate(dtStr) {
+      if (!dtStr) return new Date(0);
+      let str = String(dtStr).trim();
+
+      if (str.includes('T') || str.includes('-')) {
+        const cleanStr = str.replace(' ', 'T');
+        const parts = cleanStr.split('T');
+        if (parts.length >= 2) {
+          const dateParts = parts[0].split('-');
+          const timeParts = parts[1].split(':');
+          if (dateParts.length === 3 && timeParts.length >= 2) {
+            return new Date(
+              parseInt(dateParts[0], 10),
+              parseInt(dateParts[1], 10) - 1,
+              parseInt(dateParts[2], 10),
+              parseInt(timeParts[0], 10),
+              parseInt(timeParts[1], 10),
+              timeParts[2] ? parseInt(timeParts[2], 10) : 0
+            );
+          }
+        }
+      }
+      return new Date(dtStr);
+    }
+
+    function updateStatistics() {
+      const listAgenda = appData.agenda || [];
+      const totalAgenda = listAgenda.length;
+      const agendaSelesai = listAgenda.filter(a => a.Status === 'Selesai').length;
+      const persenAgenda = totalAgenda > 0 ? Math.round((agendaSelesai / totalAgenda) * 100) : 0;
+
+      document.getElementById('statAgenda').innerText = `${agendaSelesai} / ${totalAgenda} Selesai`;
+      document.getElementById('persenAgenda').innerText = `${persenAgenda}%`;
+      document.getElementById('progressBarAgenda').style.width = `${persenAgenda}%`;
+
+      const listTugas = appData.tugas || [];
+      const totalTugas = listTugas.length;
+      const tugasSelesai = listTugas.filter(t => t.Status === 'Selesai').length;
+      const persenTugas = totalTugas > 0 ? Math.round((tugasSelesai / totalTugas) * 100) : 0;
+
+      document.getElementById('statTugas').innerText = `${tugasSelesai} / ${totalTugas} Selesai`;
+      document.getElementById('persenTugas').innerText = `${persenTugas}%`;
+      document.getElementById('progressBarTugas').style.width = `${persenTugas}%`;
+    }
+
+    function updateCountdown() {
+      if (!Array.isArray(appData.agenda)) return;
+      const now = new Date();
+      const upcoming = appData.agenda
+        .filter(a => a.JatuhTempo && parseCustomDate(a.JatuhTempo) > now)
+        .sort((a, b) => {
+          const timeA = parseCustomDate(a.JatuhTempo).getTime();
+          const timeB = parseCustomDate(b.JatuhTempo).getTime();
+          if (timeA === timeB) {
+            const pA = priorityRank[a.Prioritas] || 99;
+            const pB = priorityRank[b.Prioritas] || 99;
+            return pA - pB;
+          }
+          return timeA - timeB;
+        });
+
+      if (upcoming.length > 0) {
+        const next = upcoming[0];
+        const diff = parseCustomDate(next.JatuhTempo) - now;
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        let timeString = '';
+        if (days > 0) {
+          timeString = `${days} hari ${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        } else {
+          timeString = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        document.getElementById('cdTitle').innerText = next.Judul;
+        document.getElementById('cdSub').innerText = `Lokasi: ${next.Lokasi} | ${formatDateTimeInput(next.JatuhTempo)}`;
+        document.getElementById('cdTimer').innerText = timeString;
+      } else {
+        document.getElementById('cdTitle').innerText = 'Tidak Ada Agenda Mendatang';
+        document.getElementById('cdSub').innerText = '-';
+        document.getElementById('cdTimer').innerText = '00:00:00';
+      }
+    }
+
+    function toggleFullDayOptions() {
+      const isChecked = document.getElementById('isFullDay').checked;
+      const optionsEl = document.getElementById('fullDayOptions');
+      if (isChecked) {
+        optionsEl.classList.remove('d-none');
+        calcFullDay();
+      } else {
+        optionsEl.classList.add('d-none');
+        document.getElementById('fullDayPreview').innerText = '';
+      }
+    }
+
+    function calcFullDay() {
+      const isChecked = document.getElementById('isFullDay').checked;
+      const startVal = document.getElementById('agJatuhTempo').value;
+      const previewEl = document.getElementById('fullDayPreview');
+
+      if (!isChecked || !startVal) {
+        if (previewEl) previewEl.innerText = '';
+        return;
+      }
+
+      const daysAdd = parseInt(document.getElementById('agDurasi').value) || 1;
+      const startDate = new Date(startVal);
+      const endDate = new Date(startDate.getTime() + (daysAdd * 24 * 60 * 60 * 1000));
+
+      const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const endDayStr = dayNames[endDate.getDay()];
+      const endDateFormatted = `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()} Pukul ${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
+
+      previewEl.innerText = ` Agenda akan berlangsung selama ${daysAdd} hari (Selesai pada: ${endDayStr}, ${endDateFormatted} WIB)`;
+    }
+
+    // Pemutar Suara Notifikasi ala WhatsApp (Web Audio API)
+    function playNotificationSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(1200, audioCtx.currentTime + 0.1);
+
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+      } catch (e) {
+        console.log("Audio notification played via browser limitation.");
+      }
+    }
+
+    // Pemicu Notifikasi ala WhatsApp (Floating Banner + Suara + Getar)
+    function showWhatsAppStyleNotification(title, bodyText) {
+      playNotificationSound();
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const options = {
+          body: bodyText,
+          icon: 'https://lh3.googleusercontent.com/d/1v9XLw_NjWKP9zdtIgREkPYmgakhKMq_n',
+          vibrate: [200, 100, 200],
+          tag: 'musafa-notification',
+          requireInteraction: true
+        };
+
+        try {
+          const n = new Notification(title, options);
+          n.onclick = function(event) {
+            event.preventDefault();
+            window.focus();
+            n.close();
+          };
+        } catch (err) {
+          console.log("Notification error:", err);
+        }
+      }
+    }
+
+    function requestNotificationPermission() {
+      if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            alert('Izin notifikasi berhasil diaktifkan!');
+            checkAndTriggerInstantNotifications();
+          } else {
+            alert('Izin notifikasi ditolak.');
+          }
+        });
+      } else {
+        alert('Browser Anda tidak mendukung fitur Notifikasi.');
+      }
+    }
+
+    function checkAndTriggerInstantNotifications() {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+      const todayAgenda = (appData.agenda || []).filter(a => {
+        if (!a.JatuhTempo || a.Status === 'Selesai') return false;
+        return a.JatuhTempo.startsWith(todayStr);
+      }).sort((a, b) => parseCustomDate(a.JatuhTempo) - parseCustomDate(b.JatuhTempo));
+
+      if (todayAgenda.length > 0) {
+        const nextAg = todayAgenda[0];
+        const timeOnly = nextAg.JatuhTempo.split('T')[1] || nextAg.JatuhTempo;
+        const msg = `AGENDA TERDEKAT HARI INI ADALAH ${nextAg.Judul.toUpperCase()} DI ${nextAg.Lokasi.toUpperCase()} PUKUL ${timeOnly}`;
+        showWhatsAppStyleNotification('MUSAFA MOBILE - Agenda Terdekat', msg);
+      }
+
+      (appData.tugas || []).forEach(t => {
+        if (t.Deadline && t.Status !== 'Selesai') {
+          const target = parseCustomDate(t.Deadline);
+          const diffHours = (target - now) / (1000 * 60 * 60);
+          const notifId = `instant_tugas_${t.rowId}`;
+
+          if (diffHours > 0 && diffHours <= 24 && !notifiedItems.has(notifId)) {
+            const msg = `TUGAS ${t.MataPelajaran.toUpperCase()} TELAH MENDEKATI DEADLINE`;
+            showWhatsAppStyleNotification('MUSAFA MOBILE - Peringatan Tugas', msg);
+            notifiedItems.add(notifId);
+          }
+        }
+      });
+    }
+
+    function checkDeadlineNotifications() {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      const now = new Date();
+
+      (appData.agenda || []).forEach(a => {
+        if (a.JatuhTempo && a.Status !== 'Selesai') {
+          const target = parseCustomDate(a.JatuhTempo);
+          const diffMins = (target - now) / (1000 * 60);
+          const notifId = `agenda_${a.rowId}_${a.Judul}`;
+
+          if (diffMins > 0 && diffMins <= 30 && !notifiedItems.has(notifId)) {
+            const timeOnly = a.JatuhTempo.split('T')[1] || a.JatuhTempo;
+            const msg = `AGENDA TERDEKAT HARI INI ADALAH ${a.Judul.toUpperCase()} DI ${a.Lokasi.toUpperCase()} PUKUL ${timeOnly}`;
+            showWhatsAppStyleNotification('MUSAFA MOBILE - Peringatan Agenda!', msg);
+            notifiedItems.add(notifId);
+          }
+        }
+      });
+
+      (appData.tugas || []).forEach(t => {
+        if (t.Deadline && t.Status !== 'Selesai') {
+          const target = parseCustomDate(t.Deadline);
+          const diffHours = (target - now) / (1000 * 60 * 60);
+          const notifId = `tugas_${t.rowId}_${t.MataPelajaran}`;
+
+          if (diffHours > 0 && diffHours <= 24 && !notifiedItems.has(notifId)) {
+            const msg = `TUGAS ${t.MataPelajaran.toUpperCase()} TELAH MENDEKATI DEADLINE`;
+            showWhatsAppStyleNotification('MUSAFA MOBILE - Peringatan Tugas!', msg);
+            notifiedItems.add(notifId);
+          }
+        }
+      });
+    }
+
+    function formatDateTimeInput(dtStr) {
+      if (!dtStr) return '-';
+      let str = String(dtStr).trim();
+      if (str.includes('T')) {
+        const parts = str.split('T');
+        const dateParts = parts[0].split('-');
+        const timeParts = parts[1].split(':');
+        if (dateParts.length === 3 && timeParts.length >= 2) {
+          const hh = String(timeParts[0]).padStart(2, '0');
+          const mm = String(timeParts[1]).padStart(2, '0');
+          return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]} Pukul ${hh}:${mm} WIB`;
+        }
+      }
+      return str;
+    }
+
+    function renderDashboard() {
+      const sortedAgenda = [...(appData.agenda || [])].sort((a, b) => {
+        const timeA = parseCustomDate(a.JatuhTempo).getTime();
+        const timeB = parseCustomDate(b.JatuhTempo).getTime();
+
+        if (timeA === timeB) {
+          const rankA = priorityRank[a.Prioritas] || 99;
+          const rankB = priorityRank[b.Prioritas] || 99;
+          return rankA - rankB;
+        }
+        return timeA - timeB;
+      });
+
+      const tbAg = document.getElementById('tbAgendaDashboard');
+      tbAg.innerHTML = '';
+      if (sortedAgenda.length === 0) {
+        tbAg.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Belum ada agenda diinput</td></tr>';
+      } else {
+        sortedAgenda.forEach(a => {
+          tbAg.innerHTML += `
+            <tr>
+              <td><strong>${a.Judul}</strong><br><small class="text-muted"><i class="fa-solid fa-location-dot me-1"></i>${a.Lokasi}</small></td>
+              <td><span class="fw-semibold text-primary"><i class="fa-regular fa-clock me-1"></i>${formatDateTimeInput(a.JatuhTempo)}</span></td>
+              <td><span class="badge bg-${a.Prioritas === 'DINAS' ? 'danger' : a.Prioritas === 'KHUSUS' ? 'warning' : 'secondary'}">${a.Prioritas}</span></td>
+              <td><span class="badge bg-${a.Status === 'Selesai' ? 'success' : 'info'}">${a.Status}</span></td>
+            </tr>
+          `;
+        });
+      }
+
+      const tbTg = document.getElementById('tbTugasDashboard');
+      tbTg.innerHTML = '';
+      const listTugas = appData.tugas || [];
+      if (listTugas.length === 0) {
+        tbTg.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Belum ada tugas diinput</td></tr>';
+      } else {
+        listTugas.forEach(t => {
+          const detailHtml = t.Detail && t.Detail.startsWith('http') ? `<a href="${t.Detail}" target="_blank">Buka Link</a>` : t.Detail;
+          tbTg.innerHTML += `
+            <tr>
+              <td><strong>${t.MataPelajaran}</strong><br><small class="text-muted">${t.NamaGuru}</small></td>
+              <td><span class="fw-semibold text-danger"><i class="fa-regular fa-clock me-1"></i>${formatDateTimeInput(t.Deadline)}</span></td>
+              <td>${detailHtml}</td>
+              <td><span class="badge bg-${t.Status === 'Selesai' ? 'success' : 'warning'}">${t.Status}</span></td>
+            </tr>
+          `;
+        });
+      }
+
+      renderDaySchedules();
+    }
+
+    function toggleExamMode(checkbox) {
+      isExamActive = checkbox.checked;
+      localStorage.setItem('isExamActive', isExamActive);
+      applyExamModeUI(isExamActive);
+      renderDaySchedules();
+    }
+
+    function applyExamModeUI(isActive) {
+      const titleHariIni = document.getElementById('titleHariIni');
+      const titleBesok = document.getElementById('titleBesok');
+      const boxHariIni = document.getElementById('boxJadwalHariIni');
+      const boxBesok = document.getElementById('boxJadwalBesok');
+      const toggleEl = document.getElementById('toggleModeUjian');
+
+      if (toggleEl) toggleEl.checked = isActive;
+
+      if (isActive) {
+        if (titleHariIni) titleHariIni.innerHTML = '<i class="fa-solid fa-file-pen me-2"></i> Jadwal Ujian Hari Ini';
+        if (titleBesok) titleBesok.innerHTML = '<i class="fa-solid fa-file-lines me-2"></i> Jadwal Ujian Besok';
+        if (boxHariIni) boxHariIni.className = "card p-3 mb-3 border-start border-4 border-warning";
+        if (boxBesok) boxBesok.className = "card p-3 mb-4 border-start border-4 border-secondary";
+      } else {
+        if (titleHariIni) titleHariIni.innerHTML = '<i class="fa-solid fa-calendar-day me-2"></i> Jadwal Pelajaran Hari Ini';
+        if (titleBesok) titleBesok.innerHTML = '<i class="fa-solid fa-calendar-week me-2"></i> Jadwal Pelajaran Besok';
+        if (boxHariIni) boxHariIni.className = "card p-3 mb-3 border-start border-4 border-info";
+        if (boxBesok) boxBesok.className = "card p-3 mb-4 border-start border-4 border-secondary";
+      }
+    }
+
+    function renderDaySchedules() {
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const now = new Date();
+      const todayIdx = now.getDay();
+      const tomorrowIdx = (todayIdx + 1) % 7;
+      const todayName = days[todayIdx];
+      const tomorrowName = days[tomorrowIdx];
+
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      const parseEndMinutes = (jamStr) => {
+        if (!jamStr || !jamStr.includes('-')) return 1440;
+        const endPart = jamStr.split('-')[1].trim();
+        const normalizedTime = endPart.replace('.', ':');
+        const timeParts = normalizedTime.split(':');
+        if (timeParts.length >= 2) {
+          return parseInt(timeParts[0], 10) * 60 + parseInt(timeParts[1], 10);
+        }
+        return 1440;
+      };
+
+      const sourceData = isExamActive ? (appData.ujian || []) : (appData.jadwal || []);
+
+      const elHariIni = document.getElementById('jadwalHariIni');
+      if (elHariIni) {
+        elHariIni.innerHTML = '';
+
+        if (todayName === 'Sabtu' || todayName === 'Minggu') {
+          elHariIni.innerHTML = `
+            <div class="alert alert-success text-center mb-0 shadow-sm" role="alert">
+              <i class="fa-solid fa-umbrella-beach fa-2x mb-2 d-block"></i>
+              <strong>SEKOLAH LIBUR, SAATNYA BERSENANG SENANG DENGAN KELUARGA, SAHABAT, DAN MASYARAKAT</strong>
+            </div>`;
+        } else {
+          const listToday = sourceData.filter(j => j.Hari === todayName);
+          const activeToday = listToday.filter(j => parseEndMinutes(j.Jam) > currentMinutes);
+
+          if (listToday.length === 0) {
+            elHariIni.innerHTML = `<small class="text-muted">Tidak ada ${isExamActive ? 'jadwal ujian' : 'jadwal pelajaran'} diinput untuk hari ini.</small>`;
+          } else if (activeToday.length === 0) {
+            elHariIni.innerHTML = `
+              <div class="alert alert-info text-center mb-0 shadow-sm" role="alert">
+                <i class="fa-solid fa-house-user fa-2x mb-2 d-block"></i>
+                <strong>SEKOLAH HARI INI SUDAH SELESAI, SAATNYA PULANG, HATI HATI DIJALAN</strong>
+              </div>`;
+          } else {
+            activeToday.forEach(j => {
+              const guruInfo = j.NamaGuru && j.NamaGuru !== '-' ? ` | ${j.NamaGuru}` : '';
+              elHariIni.innerHTML += `
+                <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                  <div>
+                    <span class="fw-bold">${j.MataPelajaran}</span>
+                    <br><small class="text-muted"><i class="fa-regular fa-clock me-1"></i>${j.Jam}${guruInfo}</small>
+                  </div>
+                </div>
+              `;
+            });
+          }
+        }
+      }
+
+      const elBesok = document.getElementById('jadwalBesok');
+      if (elBesok) {
+        elBesok.innerHTML = '';
+
+        if (tomorrowName === 'Sabtu' || tomorrowName === 'Minggu') {
+          elBesok.innerHTML = `
+            <div class="alert alert-secondary text-center mb-0" role="alert">
+              <small class="fw-bold">Besok (${tomorrowName}) libur sekolah.</small>
+            </div>`;
+        } else {
+          const listTomorrow = sourceData.filter(j => j.Hari === tomorrowName);
+          if (listTomorrow.length === 0) {
+            elBesok.innerHTML = `<small class="text-muted">Tidak ada ${isExamActive ? 'jadwal ujian' : 'jadwal pelajaran'} diinput untuk besok.</small>`;
+          } else {
+            listTomorrow.forEach(j => {
+              const guruInfo = j.NamaGuru && j.NamaGuru !== '-' ? ` | ${j.NamaGuru}` : '';
+              elBesok.innerHTML += `
+                <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                  <div>
+                    <span class="fw-bold">${j.MataPelajaran}</span>
+                    <br><small class="text-muted"><i class="fa-regular fa-clock me-1"></i>${j.Jam}${guruInfo}</small>
+                  </div>
+                </div>
+              `;
+            });
+          }
+        }
+      }
+    }
+
+    function renderAdminTables() {
+      const agTbody = document.getElementById('tbAdminAgenda');
+      agTbody.innerHTML = '';
+      (appData.agenda || []).forEach(a => {
+        agTbody.innerHTML += `
+          <tr>
+            <td>${a.Judul}</td>
+            <td>${a.Status}</td>
+            <td>
+              <button class="btn btn-sm btn-warning mb-1" onclick="editAgenda('${a.rowId}')">Edit</button>
+              <button class="btn btn-sm btn-danger mb-1" onclick="deleteItem('Agenda', '${a.rowId}')">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      const tgTbody = document.getElementById('tbAdminTugas');
+      tgTbody.innerHTML = '';
+      (appData.tugas || []).forEach(t => {
+        tgTbody.innerHTML += `
+          <tr>
+            <td>${t.MataPelajaran}</td>
+            <td>${t.Status}</td>
+            <td>
+              <button class="btn btn-sm btn-warning mb-1" onclick="editTugas('${t.rowId}')">Edit</button>
+              <button class="btn btn-sm btn-danger mb-1" onclick="deleteItem('Tugas', '${t.rowId}')">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      const jwTbody = document.getElementById('tbAdminJadwal');
+      jwTbody.innerHTML = '';
+      (appData.jadwal || []).forEach(j => {
+        jwTbody.innerHTML += `
+          <tr>
+            <td>${j.Hari}, ${j.Jam}</td>
+            <td>${j.MataPelajaran}</td>
+            <td>
+              <button class="btn btn-sm btn-warning mb-1" onclick="editJadwal('${j.rowId}')">Edit</button>
+              <button class="btn btn-sm btn-danger mb-1" onclick="deleteItem('JadwalPelajaran', '${j.rowId}')">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      const ujTbody = document.getElementById('tbAdminUjian');
+      ujTbody.innerHTML = '';
+      (appData.ujian || []).forEach(u => {
+        ujTbody.innerHTML += `
+          <tr>
+            <td>${u.Hari}, ${u.Jam}</td>
+            <td>${u.MataPelajaran}</td>
+            <td>
+              <button class="btn btn-sm btn-warning mb-1" onclick="editUjian('${u.rowId}')">Edit</button>
+              <button class="btn btn-sm btn-danger mb-1" onclick="deleteItem('JadwalUjian', '${u.rowId}')">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('d-none'));
+      document.getElementById(`tab-${tabName}`).classList.remove('d-none');
+      if (tabName === 'dashboard') {
+        loadData();
+      }
+    }
+
+    function toggleDisposisi(val) {
+      const isDisposisi = (val === 'Disposisi');
+      document.getElementById('disposisiGroup').classList.toggle('d-none', !isDisposisi);
+      if (isDisposisi) {
+        toggleDisposisiLain(document.getElementById('agDisposisiTarget').value);
+      }
+    }
+
+    function toggleDisposisiLain(targetVal) {
+      const isLain = (targetVal === 'OPSI LAIN');
+      document.getElementById('disposisiLainGroup').classList.toggle('d-none', !isLain);
+    }
+
+    function submitAgenda(e) {
+      e.preventDefault();
+      const isFullDay = document.getElementById('isFullDay').checked;
+      const durasiDays = isFullDay ? document.getElementById('agDurasi').value : '0';
+      const startVal = document.getElementById('agJatuhTempo').value;
+
+      let finalJatuhTempo = startVal;
+      if (isFullDay && startVal) {
+        const daysAdd = parseInt(durasiDays);
+        const startDate = new Date(startVal);
+        const endDate = new Date(startDate.getTime() + (daysAdd * 24 * 60 * 60 * 1000));
+        finalJatuhTempo = endDate.toISOString().substring(0, 16);
+      }
+
+      const statusVal = document.getElementById('agStatus').value;
+      let finalDisposisi = '';
+      if (statusVal === 'Disposisi') {
+        const targetVal = document.getElementById('agDisposisiTarget').value;
+        if (targetVal === 'OPSI LAIN') {
+          finalDisposisi = document.getElementById('agDisposisiText').value;
+        } else {
+          finalDisposisi = targetVal;
+        }
+      }
+
+      const payload = {
+        pin: 'FT',
+        data: {
+          rowId: document.getElementById('agRowId').value,
+          judul: document.getElementById('agJudul').value + (isFullDay ? ` (Full Day - ${durasiDays} Hari)` : ''),
+          lokasi: document.getElementById('agLokasi').value,
+          jatuhTempo: finalJatuhTempo,
+          prioritas: document.getElementById('agPrioritas').value,
+          status: statusVal,
+          disposisi: finalDisposisi,
+          tamu: document.getElementById('agTamu').value,
+        }
+      };
+
+      callGasApi('saveAgenda', payload)
+        .then(() => {
+          alert('Agenda berhasil disimpan!');
+          document.getElementById('agRowId').value = '';
+          document.getElementById('isFullDay').checked = false;
+          toggleFullDayOptions();
+          e.target.reset();
+          toggleDisposisi('Agendakan');
+          loadData();
+        })
+        .catch(err => alert(err.message));
+    }
+
+    function submitTugas(e) {
+      e.preventDefault();
+      const payload = {
+        pin: 'FT',
+        data: {
+          rowId: document.getElementById('tgRowId').value,
+          mataPelajaran: document.getElementById('tgMapel').value,
+          namaGuru: document.getElementById('tgGuru').value,
+          deadline: document.getElementById('tgDeadline').value,
+          detail: document.getElementById('tgDetail').value,
+          status: document.getElementById('tgStatus').value,
+        }
+      };
+
+      callGasApi('saveTugas', payload)
+        .then(() => {
+          alert('Tugas berhasil disimpan!');
+          document.getElementById('tgRowId').value = '';
+          e.target.reset();
+          loadData();
+        })
+        .catch(err => alert(err.message));
+    }
+
+    function submitJadwal(e) {
+      e.preventDefault();
+      const payload = {
+        pin: 'FT',
+        data: {
+          rowId: document.getElementById('jwRowId').value,
+          hari: document.getElementById('jwHari').value,
+          jam: document.getElementById('jwJam').value,
+          mataPelajaran: document.getElementById('jwMapel').value,
+          namaGuru: document.getElementById('jwGuru').value,
+        }
+      };
+
+      callGasApi('saveJadwal', payload)
+        .then(() => {
+          alert('Jadwal berhasil disimpan!');
+          document.getElementById('jwRowId').value = '';
+          e.target.reset();
+          loadData();
+        })
+        .catch(err => alert(err.message));
+    }
+
+    function submitUjian(e) {
+      e.preventDefault();
+      const payload = {
+        pin: 'FT',
+        data: {
+          rowId: document.getElementById('ujRowId').value,
+          hari: document.getElementById('ujHari').value,
+          jam: document.getElementById('ujJam').value,
+          mataPelajaran: document.getElementById('ujMapel').value,
+          namaGuru: '-'
+        }
+      };
+
+      callGasApi('saveUjian', payload)
+        .then(() => {
+          alert('Jadwal Ujian berhasil disimpan!');
+          document.getElementById('ujRowId').value = '';
+          e.target.reset();
+          loadData();
+        })
+        .catch(err => alert(err.message));
+    }
+
+    function editAgenda(rowId) {
+      const item = (appData.agenda || []).find(x => String(x.rowId) === String(rowId));
+      if (!item) return;
+      document.getElementById('agRowId').value = item.rowId;
+      document.getElementById('agJudul').value = (item.Judul || '').replace(/ \(Full Day.*?\)/, '');
+      document.getElementById('agLokasi').value = item.Lokasi || '';
+      document.getElementById('agJatuhTempo').value = item.JatuhTempo ? item.JatuhTempo.substring(0, 16) : '';
+      document.getElementById('agPrioritas').value = item.Prioritas || 'DINAS';
+      document.getElementById('agStatus').value = item.Status || 'Agendakan';
+      
+      toggleDisposisi(item.Status);
+      if (item.Status === 'Disposisi') {
+        const dispVal = item.Disposisi || '';
+        if (dispVal === 'WAKIL KETUA' || dispVal === 'SEKRETARIS') {
+          document.getElementById('agDisposisiTarget').value = dispVal;
+          toggleDisposisiLain(dispVal);
+        } else {
+          document.getElementById('agDisposisiTarget').value = 'OPSI LAIN';
+          toggleDisposisiLain('OPSI LAIN');
+          document.getElementById('agDisposisiText').value = dispVal;
+        }
+      }
+      document.getElementById('agTamu').value = item.Tamu || '';
+      showTab('agenda');
+    }
+
+    function editTugas(rowId) {
+      const item = (appData.tugas || []).find(x => String(x.rowId) === String(rowId));
+      if (!item) return;
+      document.getElementById('tgRowId').value = item.rowId;
+      document.getElementById('tgMapel').value = item.MataPelajaran || '';
+      document.getElementById('tgGuru').value = item.NamaGuru || '';
+      document.getElementById('tgDeadline').value = item.Deadline ? item.Deadline.substring(0, 16) : '';
+      document.getElementById('tgDetail').value = item.Detail || '';
+      document.getElementById('tgStatus').value = item.Status || 'Baru';
+      showTab('tugas');
+    }
+
+    function editJadwal(rowId) {
+      const item = (appData.jadwal || []).find(x => String(x.rowId) === String(rowId));
+      if (!item) return;
+      document.getElementById('jwRowId').value = item.rowId;
+      document.getElementById('jwHari').value = item.Hari || 'Senin';
+      document.getElementById('jwJam').value = item.Jam || '';
+      document.getElementById('jwMapel').value = item.MataPelajaran || '';
+      document.getElementById('jwGuru').value = item.NamaGuru || '';
+      showTab('jadwal');
+    }
+
+    function editUjian(rowId) {
+      const item = (appData.ujian || []).find(x => String(x.rowId) === String(rowId));
+      if (!item) return;
+      document.getElementById('ujRowId').value = item.rowId;
+      document.getElementById('ujHari').value = item.Hari || 'Senin';
+      document.getElementById('ujJam').value = item.Jam || '';
+      document.getElementById('ujMapel').value = item.MataPelajaran || '';
+      showTab('ujian');
+    }
+
+    function deleteItem(sheetName, rowId) {
+      if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+        callGasApi('deleteRow', { pin: 'FT', sheetName: sheetName, rowId: rowId })
+          .then(() => {
+            alert('Data berhasil dihapus!');
+            loadData();
+          })
+          .catch(err => alert(err.message));
+      }
+    }
+
+    function setTheme(mode) {
+      if (mode === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    }
+
+    function setFontSize(sizeClass) {
+      document.body.className = document.body.className.replace(/font-(sm|md|lg)/g, '');
+      document.body.classList.add(sizeClass);
+    }
+
+    function logout() {
+      document.getElementById('mainApp').classList.add('d-none');
+      document.getElementById('loginPage').classList.remove('d-none');
+    }
+  </script>
+</body>
+</html>
