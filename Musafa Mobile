@@ -603,15 +603,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // URL Web App GAS baru Anda
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxzNrwRfztNQQnC3qPcdPDoS4b4clFMpRfxsn4k24JdRpG70t_RDYwGD0WvXngCOgWdeQ/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbx0R30fKYwKYm632MMP2AT8MZVz171b9vlQpI0lqHNjyJE3N7ej9HDYaCHD8DAXo9rzwg/exec';
 
     let appData = { agenda: [], tugas: [], jadwal: [], ujian: [] };
     let pendingTab = null;
     let pinModalObj = null;
     let notifiedItems = new Set();
     
-    // Sinkronisasi status mode ujian menggunakan localStorage agar sinkron di semua perangkat (HP / Laptop)
     let isExamActive = localStorage.getItem('isExamActive') === 'true';
 
     const priorityRank = {
@@ -671,6 +669,20 @@
     updateClock();
     setInterval(updateClock, 1000);
 
+    // Auto-sync data antar perangkat setiap 15 detik
+    setInterval(() => {
+      if (!document.getElementById('mainApp').classList.contains('d-none')) {
+        callGasApi('getAllDashboardData')
+          .then(data => {
+            if (data) {
+              appData = data;
+              renderAll();
+            }
+          })
+          .catch(err => console.log("Background sync error:", err));
+      }
+    }, 15000);
+
     document.addEventListener('DOMContentLoaded', () => {
       const modalEl = document.getElementById('pinModal');
       pinModalObj = new bootstrap.Modal(modalEl);
@@ -685,7 +697,6 @@
         Notification.requestPermission();
       }
 
-      // Sinkronkan posisi tombol switch dengan status tersimpan (localStorage) di HP / Laptop
       applyExamModeUI(isExamActive);
     });
 
@@ -916,7 +927,6 @@
       previewEl.innerText = ` Agenda akan berlangsung selama ${daysAdd} hari (Selesai pada: ${endDayStr}, ${endDateFormatted} WIB)`;
     }
 
-    // Pemutar Suara Notifikasi ala WhatsApp (Web Audio API)
     function playNotificationSound() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -940,7 +950,6 @@
       }
     }
 
-    // Pemicu Notifikasi ala WhatsApp (Floating Banner + Suara + Getar)
     function showWhatsAppStyleNotification(title, bodyText) {
       playNotificationSound();
 
